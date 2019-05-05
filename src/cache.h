@@ -47,9 +47,6 @@ class CacheLine {
 class Cache {
     
     private:
-        int numberOfRows; //Number of rows in cache
-        int setAssociativity; //1 for direct mapped
-        int numberOfSets;
         int indexSize, offsetSize;
         long long hits, misses;
         CacheLine* cacheLines;
@@ -57,7 +54,6 @@ class Cache {
         //set is full if nextFreeBlockInSet == setAssociativity
 
     public:
-        Cache(int numberOfSets, int blockSize, int setAssociativity);
 
         bool warmedUp(); //check if the cache has been populated
         void incHits(); //Must be called when there is a cache hit
@@ -80,6 +76,20 @@ class Cache {
         long long getIndexFromAddress(long long address);
 
         void displayCache(); //for debugging
+        
+        virtual void policySpecifcAlloc() = 0; //for eviction policy specfic allocation
+        virtual void prefetch() = 0;
+        virtual void onHit(long long row) = 0; //row is the row number of cacheline where data is present
+        virtual void onMissWithNoEvict(long long row) = 0; //row number of cacheline where data is inserted (NOTE: This is to be changed)
+        virtual long long onMissWithEvict(long long index, long long tag, int rowBegin, int rowEnd) = 0; //has to return the row number of evicted cache line (wherein new cacheline is inserted)
+        virtual void postfetch() = 0;
+        virtual void policySpecificDealloc() = 0; //for eviction policy specific deallocation
 
-        ~Cache(); //destructor
+        virtual ~Cache(); //destructor
+
+    protected:
+        int numberOfRows; //Number of rows in cache
+        int setAssociativity; //1 for direct mapped
+        int numberOfSets;
+        Cache(int numberOfSets, int blockSize, int setAssociativity);
 };
