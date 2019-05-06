@@ -77,6 +77,12 @@ class Cache {
 
         void displayCache(); //for debugging
         
+        //getters
+        int getNumberOfRows();
+        int getSetAssociativity();
+        int getNumberOfSets();
+
+        //for specific replacement policy
         virtual void policySpecifcAlloc() = 0; //for eviction policy specfic allocation
         virtual void prefetch() = 0;
         virtual void onHit(long long row) = 0; //row is the row number of cacheline where data is present

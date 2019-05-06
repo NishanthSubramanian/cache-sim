@@ -324,6 +324,18 @@ void Cache::displayCache() {
     printf("\n");
 }
 
+int Cache::getNumberOfRows() {
+    return numberOfRows;
+}
+
+int Cache::getSetAssociativity() {
+    return setAssociativity;
+}
+
+int Cache::getNumberOfSets() {
+    return numberOfSets;
+}
+
 Cache::~Cache() {
     delete[] cacheLines;
     delete[] nextFreeBlockInSet;
