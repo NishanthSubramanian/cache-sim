@@ -72,8 +72,8 @@ int main(int argc, char *argv[]) {
                 else { //if no empty slot is available in cache
                     ll index = caches[i]->getIndexFromAddress(address); //value of index of address
                     ll tag = caches[i]->getTagFromAddress(address); //value of tag of address
-                    ll rowBegin = index * setAssociativity; 
-                    ll rowEnd = (index + 1) * setAssociativity;
+                    ll rowBegin = index * caches[i]->getSetAssociativity(); 
+                    ll rowEnd = (index + 1) * caches[i]->getSetAssociativity();
 
                     //rows between rowBegin(inclusive) and rowEnd(exclusive) must be considered for eviction
 
@@ -101,7 +101,9 @@ int main(int argc, char *argv[]) {
 
     //output
     for(int i = 0; i < caches.size(); i++) {
+        printf("L%d Cache:\n", i+1);
         printResult(duration.count(), *caches[i]);
+        printf("\n");
     }
     
     //lru specific deallocation begins
